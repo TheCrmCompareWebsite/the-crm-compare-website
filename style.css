@@ -764,6 +764,7 @@ body:has(.rc-pick:not([hidden])) .review-card { cursor: pointer; }
 /* No divider between a page title and its first section */
 h1 + h2[id], h1 + .byline + h2[id] { border-top: 0; padding-top: 0; }
 /* Home page top picks: the All Reports page card under its pick title */
+#top-picks { border-top: 0; padding-top: 0; } /* first heading on the home page: no separator under the site header */
 .home-picks { margin-bottom: 12px; }
 .home-pick { display: flex; flex-direction: column; }
 .home-pick h3 { margin: 0 0 8px; font-size: 1rem; }
