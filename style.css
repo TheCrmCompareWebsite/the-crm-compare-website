@@ -551,10 +551,25 @@ details.group .gvalue .gpts { box-sizing: border-box; width: 5em; min-width: 0; 
 .pick dt { color: var(--muted); }
 .pick dd { margin: 0; }
 
-/* ---------- Details / FAQ ---------- */
-details.faq { border-bottom: 1px solid var(--line); padding: 12px 0; }
-details.faq summary { font-weight: 600; cursor: pointer; }
-details.faq[open] summary { margin-bottom: 8px; }
+/* ===== START STANDARD: faq ===== */
+/* Frequently asked questions (faq_list() in build_site.py): each question a <details> that opens to
+   its answer. The same questions are in the page's schema.org FAQPage data. */
+.faq-list { border-top: 1px solid var(--line); margin: 8px 0 24px; }
+details.faq { border-bottom: 1px solid var(--line); }
+details.faq summary {
+  font-weight: 600; cursor: pointer; padding: 14px 32px 14px 0; position: relative; list-style: none;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::after {
+  content: "+"; position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  font-size: 1.3rem; font-weight: 400; color: var(--muted); line-height: 1;
+}
+details.faq[open] summary::after { content: "−"; }
+details.faq summary:hover { color: var(--brand); }
+details.faq summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.faq-a { padding: 0 32px 14px 0; }
+.faq-a p { margin: 0; }
+/* ===== END STANDARD: faq ===== */
 
 
 /* ---------- Comparison pages (compare/<a>-vs-<b>.html, build_site.build_vs): a spec sheet ----------
@@ -769,7 +784,7 @@ body:has(.rc-pick:not([hidden])) .review-card { cursor: pointer; }
 /* No divider between a page title and its first section */
 h1 + h2[id], h1 + .byline + h2[id] { border-top: 0; padding-top: 0; }
 /* Home page top picks: the All Reports page card under its pick title */
-#top-picks { border-top: 0; padding-top: 0; } /* first heading on the home page: no separator under the site header */
+#top-picks { border-top: 0; padding-top: 0; margin-top: 0; } /* first heading on the home page: no separator or extra gap under the site header */
 .home-picks { margin-bottom: 12px; }
 .home-pick { display: flex; flex-direction: column; }
 .home-pick h3 { margin: 0 0 8px; font-size: 1rem; }
