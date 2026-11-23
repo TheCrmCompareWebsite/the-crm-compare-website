@@ -18,6 +18,10 @@
   --ok-bg: #f7eed3;
   --bad-bg: #f8e3e3;
   --notice: #fff4d6;
+  /* Text on the tinted -bg colours (score badges, fit chips): darker so it passes WCAG AA (6:1+) */
+  --good-ink: #19643f;
+  --ok-ink: #72530c;
+  --bad-ink: #963232;
   --shadow: 0 1px 2px rgba(20, 30, 50, .06), 0 4px 14px rgba(20, 30, 50, .05);
   --wrap: 1320px;
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -118,14 +122,15 @@ figcaption { font-size: .85rem; color: var(--muted); }
   font-family: var(--score-font); font-weight: 700; font-style: normal;
   font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.score.good { background: var(--good-bg); color: var(--good); }
-.score.ok { background: var(--ok-bg); color: var(--ok); }
-.score.bad { background: var(--bad-bg); color: var(--bad); }
+.score.good { background: var(--good-bg); color: var(--good-ink); }
+.score.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.score.bad { background: var(--bad-bg); color: var(--bad-ink); }
 .score.big { font-size: 2rem; padding: 6px 14px; }
 /* plain: the number with no badge (score bars, comparison tables) */
 .score.plain { background: none; color: inherit; padding: 0; min-width: 0; }
-/* The "/10" after every score: the score itself is bold at full opacity, the total is not */
-.score .out-of { font-weight: 400; opacity: .55; margin-left: 1px; }
+/* The "/10" after every score: the score itself is bold, the total is regular weight and a little
+   smaller. No opacity: a faded total fails the WCAG colour-contrast check. */
+.score .out-of { font-weight: 400; font-size: .85em; margin-left: 1px; }
 /* smaller on the big headline score so it stays readable */
 .score.big .out-of { font-size: .5em; align-self: flex-end; margin: 0 0 .45em 2px; }
 /* ===== END STANDARD: score ===== */
@@ -586,9 +591,9 @@ details.faq[open] summary { margin-bottom: 8px; }
 .ss-list li { padding: 2px 0; }
 .ss-tag { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; background: var(--surface-2); color: var(--muted); padding: 1px 5px; vertical-align: 1px; }
 .fit-chip { display: inline-block; padding: 1px 8px; font-size: .8rem; font-weight: 700; border: 1px solid currentColor; white-space: nowrap; }
-.fit-chip.ideal { color: var(--good); background: var(--good-bg); }
-.fit-chip.suitable { color: var(--ok); background: var(--ok-bg); }
-.fit-chip.poor { color: var(--bad); background: var(--bad-bg); }
+.fit-chip.ideal { color: var(--good-ink); background: var(--good-bg); }
+.fit-chip.suitable { color: var(--ok-ink); background: var(--ok-bg); }
+.fit-chip.poor { color: var(--bad-ink); background: var(--bad-bg); }
 .ss-feat-sum { padding: 12px 12px 4px; border-bottom: 1px solid var(--line); }
 .ss-feat-sum p { margin: 0 0 8px; }
 .ss-open { padding: 3px 10px; font-size: .82rem; margin-left: 6px; }
@@ -674,9 +679,9 @@ h2[id] { scroll-margin-top: 16px; padding-top: 10px; border-top: 1px solid var(-
 .price-ends { display: flex; justify-content: space-between; }
 .price-ends output { margin-left: 0; }
 .slider-field output.score { margin-left: 6px; font-size: .93rem; padding: 2px 8px; background: var(--surface-2); color: var(--muted); }
-.slider-field output.score.good { background: var(--good-bg); color: var(--good); }
-.slider-field output.score.ok { background: var(--ok-bg); color: var(--ok); }
-.slider-field output.score.bad { background: var(--bad-bg); color: var(--bad); }
+.slider-field output.score.good { background: var(--good-bg); color: var(--good-ink); }
+.slider-field output.score.ok { background: var(--ok-bg); color: var(--ok-ink); }
+.slider-field output.score.bad { background: var(--bad-bg); color: var(--bad-ink); }
 /* Filters stacked vertically */
 .filters { flex-direction: column; align-items: flex-start; gap: 18px; }
 .slider-field { width: 340px; max-width: 100%; }
