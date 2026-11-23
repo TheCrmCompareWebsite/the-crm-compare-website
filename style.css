@@ -97,13 +97,6 @@ figcaption { font-size: .85rem; color: var(--muted); }
   background: var(--notice); border: 1px dashed var(--ok); padding: 1px 6px;
 }
 
-/* ---------- Hero ---------- */
-.hero { padding: 48px 0 28px; }
-.hero p.lead { font-size: 1.2rem; color: var(--muted); max-width: 640px; }
-.hero .stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 20px; }
-.hero .stats strong { display: block; font-size: 1.8rem; font-family: var(--serif); }
-.hero .stats span { color: var(--muted); font-size: .9rem; }
-
 /* ==========================================================================
    STANDARD ELEMENTS
    The site's reusable building blocks. Each block below is listed, with live
