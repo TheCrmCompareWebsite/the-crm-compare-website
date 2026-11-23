@@ -1,4 +1,4 @@
-/* All Reports page: search, filters and compare mode. Without JavaScript every card shows,
+/* All Reports page: search and filters. Without JavaScript every card shows,
    the "Real Estate CRMs" checkbox still works (CSS), and the search box and sliders stay hidden. */
 (function () {
   var cards = Array.prototype.slice.call(document.querySelectorAll("#review-grid .review-card"));
@@ -88,50 +88,7 @@
     if (first) first.querySelector(".rc-review").click();
   });
 
-  // Compare: tick the box in the corner of two cards and a bar slides up from the bottom
-  // with a Compare button. This demo only has comparison pages for some pairs, so once
-  // one card is ticked, boxes on cards without a page for that pair are disabled.
-  var bar = document.getElementById("compare-bar");
-  var names = document.getElementById("compare-names");
-  var go = document.getElementById("compare-go");
-  var boxes = cards.map(function (c) { return c.querySelector(".pick-box"); });
-  function update() {
-    var ticked = cards.filter(function (c, i) { return boxes[i].checked; });
-    var ok = ticked.length === 1 ? ticked[0].dataset.vs.split(" ") : null;
-    cards.forEach(function (c, i) {
-      var off = !boxes[i].checked && (ticked.length >= 2 || (ok && ok.indexOf(c.dataset.slug) === -1));
-      boxes[i].disabled = off;
-      c.classList.toggle("no-pair", off && ticked.length === 1);
-      c.classList.toggle("picked", boxes[i].checked);
-      boxes[i].parentNode.title = off && ticked.length === 1 ? "No comparison page with " + ticked[0].dataset.name + " yet" : "Add to comparison";
-    });
-    if (ticked.length === 2) {
-      var slugs = [ticked[0].dataset.slug, ticked[1].dataset.slug].sort();
-      names.textContent = ticked[0].dataset.name + " vs " + ticked[1].dataset.name;
-      go.href = "../compare/" + slugs[0] + "-vs-" + slugs[1] + ".html";
-      bar.hidden = false;
-      requestAnimationFrame(function () { bar.classList.add("open"); });
-    } else {
-      bar.classList.remove("open");
-      bar.hidden = true;
-    }
-  }
-  boxes.forEach(function (b) { b.addEventListener("change", update); });
-  // Clicking anywhere on a card ticks its box; the "Review" link opens the review instead.
-  cards.forEach(function (c, i) {
-    c.addEventListener("click", function (ev) {
-      if (ev.target.closest(".rc-review, .rc-pick")) return;
-      if (boxes[i].disabled) return;
-      boxes[i].checked = !boxes[i].checked;
-      update();
-    });
-  });
-  document.getElementById("compare-clear").addEventListener("click", function () {
-    boxes.forEach(function (b) { b.checked = false; });
-    update();
-  });
-  // Coming back with the browser's Back button: start with nothing ticked.
-  window.addEventListener("pageshow", function () { boxes.forEach(function (b) { b.checked = false; }); update(); });
+  // Compare (Add to Compare and the Compare button on each card) is in site.js: it works on every page.
 
   Array.prototype.forEach.call(document.querySelectorAll(".js-only"), function (el) { el.hidden = false; });
   searchForm.hidden = false;

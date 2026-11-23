@@ -1,4 +1,4 @@
-/* The CRM Compare Website stylesheet (hand-written). Copied to site/style.css by pipeline/update_site.py. The only JavaScript on the site is reviews.js on the All Reports page. */
+/* CRM Compare stylesheet (hand-written). Copied to site/style.css by pipeline/update_site.py. The only JavaScript on the site is reviews.js on the All Reports page. */
 
 :root {
   color-scheme: light;
@@ -93,6 +93,7 @@ figcaption { font-size: .85rem; color: var(--muted); }
   background: var(--surface-2); color: var(--muted); margin: 2px 4px 2px 0;
 }
 .pill.label { background: var(--brand); color: var(--brand-ink); }
+.pill.typical { background: var(--good-bg); color: var(--good-ink); }
 .callout {
   border-left: 4px solid var(--accent); background: var(--surface);
   padding: 14px 18px; margin: 1.2em 0;
@@ -141,7 +142,8 @@ figcaption { font-size: .85rem; color: var(--muted); }
 .bars { list-style: none; margin: 0; padding: 0; }
 .bars li { display: grid; grid-template-columns: 140px 1fr 5.4em; gap: 8px; align-items: center; margin: 6px 0; font-size: .92rem; }
 .bars .score { justify-self: end; }
-.bars a { display: inline-flex; align-items: center; gap: 6px; color: var(--text); text-decoration: none; }
+.bars a { display: inline-flex; align-items: center; justify-content: flex-end; justify-self: end; gap: 6px; color: var(--text); text-decoration: none; text-align: right; }
+.bars a::after { content: ":"; margin-left: -6px; }  /* each label right-justified against its bar, with a colon */
 .bar-icon { flex: none; width: 16px; height: 16px; color: var(--brand); stroke-width: 2; }
 .bars a:hover { color: var(--accent); text-decoration: underline; }
 /* The bar on its own (also used by the star-rating rows on report pages) */
@@ -163,6 +165,15 @@ th, td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: l
 thead th { background: var(--surface-2); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); white-space: nowrap; }
 tbody tr:last-child > * { border-bottom: 0; }
 tbody th[scope="row"] { font-weight: 600; }
+/* A label/value table (table(..., labelledby=...), e.g. a report's Summary): each label right-justified
+   against its value, with a colon */
+tbody th.kv { text-align: right; white-space: nowrap; width: 1%; }
+tbody th.kv::after { content: ":"; }
+/* The total row (total=True): a double line above it */
+tbody tr.total-row > * { border-top: 3px double var(--text); }
+/* Star-rating cells, coloured like the Word report: four and five stars green, one star red */
+td.rate-good { background: var(--good-bg); color: var(--good-ink); }
+td.rate-bad { background: var(--bad-bg); color: var(--bad-ink); }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }  /* numbers: right-aligned */
 td.win { font-weight: 700; }                                     /* the better value in a comparison */
 td.win::after { content: " ✓"; color: var(--good); }
@@ -176,7 +187,9 @@ td.win::after { content: " ✓"; color: var(--good); }
   .table-wrap tr { border-bottom: 1px solid var(--line); padding: 6px 0; }
   .table-wrap tbody tr:last-child { border-bottom: 0; }
   .table-wrap tr > * { display: flex; gap: 12px; justify-content: space-between; align-items: baseline; border: 0; padding: 3px 12px; text-align: right; }
-  .table-wrap tr > th[scope="row"] { display: block; text-align: left; padding-top: 6px; font-size: .95rem; }
+  .table-wrap tr > th[scope="row"] { display: block; text-align: left; padding-top: 6px; font-size: .95rem; width: auto; white-space: normal; }
+  .table-wrap tbody tr.total-row { border-top: 3px double var(--text); }
+  .table-wrap tbody tr.total-row > * { border-top: 0; }
   .table-wrap td[data-label]::before { content: attr(data-label); color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; text-align: left; flex: none; max-width: 45%; }
   .table-wrap td.small { display: block; text-align: left; }
   .table-wrap td:not([data-label]) { display: block; text-align: left; }  /* facts table: value under its row heading */
@@ -193,15 +206,16 @@ td.win::after { content: " ✓"; color: var(--good); }
 @media (max-width: 560px) { .review-grid { grid-template-columns: 1fr; } }
 .review-grid.one { grid-template-columns: 1fr; }  /* one card per row (blog lists) */
 .review-card {
-  position: relative; display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; padding: 0;
+  position: relative; display: grid; grid-row: span 4; grid-template-rows: auto auto 1fr auto; row-gap: 0; padding: 0;
   color: var(--text);
 }
+/* In a grid of cards, every card shares the grid's rows, so the parts line up across a row */
+.review-grid > .review-card, .home-pick > .review-card { grid-template-rows: subgrid; }
 .review-card[hidden] { display: none; }
 .review-card:hover { color: var(--text); border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
-.rc-main { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; padding: 16px 16px 0; }
+.rc-main { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; padding: 16px 16px 0; }
 /* Top row: logo | name and company | score */
 .rc-top { display: flex; align-items: flex-start; gap: 12px; }
-.review-card .rc-top { padding-right: 26px; }
 .rc-logo { width: 44px; height: 44px; flex: none; object-fit: contain; background: #fff; border: 1px solid var(--line); padding: 4px; }
 .rc-mono { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; color: var(--muted); }  /* initials when there's no logo */
 .rc-id { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
@@ -209,7 +223,9 @@ td.win::after { content: " ✓"; color: var(--good); }
 .rc-score { margin-left: auto; flex: none; }
 .rc-score .score { font-size: 1.15rem; }
 .rc-score .out-of { font-size: .72em; align-self: flex-end; margin-bottom: .2em; }
-/* Body: price per year, per month and free trial | (optional) category scores */
+/* Short description: the first sentence of the report's introduction */
+.rc-desc { display: block; padding-top: 10px; line-height: 1.45; color: var(--muted); }
+/* Body: price per year, per month and free trial | category scores (cats=True, the default) */
 .rc-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: start; padding-top: 14px; }
 .rc-cost { font-size: 1.05rem; padding-top: 14px; line-height: 1.45; }
 .rc-body .rc-cost { padding-top: 0; }
@@ -225,18 +241,23 @@ td.win::after { content: " ✓"; color: var(--good); }
 .rc-fit-item { display: flex; align-items: center; gap: 8px; }
 .rc-fit-item .fit-type-icon { flex: none; width: 18px; height: 18px; color: var(--brand); stroke-width: 1.75; }
 .rc-cats { display: grid; grid-template-columns: 1fr; gap: 5px; align-content: start; width: 150px; }
-.rc-cat { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: .875rem; }
-.rc-cat-name { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .7; }
+.rc-cat { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; font-size: .875rem; }
+/* each label right-justified against its score, with a colon */
+.rc-cat-name { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
 .rc-cat .score { font-size: .8rem; padding: 1px 6px; min-width: 2.4em; }
-/* Compare checkbox in the top-right corner (pick=True) */
-.rc-pick { position: absolute; top: 14px; right: 12px; display: flex; padding: 4px; cursor: pointer; }
-.rc-pick[hidden] { display: none; }
+/* The bottom of the card: Full Report, then Add to Compare and the Compare button (pick=True) */
+.rc-foot { align-self: end; display: grid; gap: 10px; padding: 14px 16px 16px; }
+.rc-compare { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.rc-compare[hidden] { display: none; }
+.rc-pick { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; font-weight: 600; cursor: pointer; }
 .rc-pick .pick-box { -webkit-appearance: checkbox; appearance: auto; width: 18px; height: 18px; margin: 0; accent-color: var(--brand); cursor: pointer; }
-.rc-pick .pick-box:disabled { cursor: not-allowed; opacity: .35; }
+.rc-pick:has(.pick-box:disabled) { cursor: not-allowed; opacity: .45; }
+.rc-compare-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: .9rem; }
+.rc-compare-btn[disabled] { opacity: .45; }
 .review-card.picked { outline: 2px solid var(--brand); outline-offset: -2px; }
 /* "Full Report": outlined button across the bottom of the card */
 .rc-review {
-  justify-self: stretch; align-self: end; display: block; margin: 14px 16px 16px; padding: 10px 14px;
+  justify-self: stretch; display: block; margin: 0; padding: 10px 14px;
   background: transparent; color: var(--brand); border: 1.5px solid var(--brand);
   text-align: center; text-decoration: none; text-underline-offset: 3px; font-weight: 600; font-size: .95rem;
 }
@@ -262,11 +283,24 @@ td.win::after { content: " ✓"; color: var(--good); }
 .review-top { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; margin-top: 12px; }
 @media (max-width: 860px) { .review-top { grid-template-columns: 1fr; } }
 .scorecard { position: sticky; top: 12px; }
-.scorecard .overall { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+/* "Overall Score" with the rank in the top right, then the score right under its heading */
+.sc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.sc-title { font-family: var(--serif); font-weight: 700; font-size: 1.2rem; }
+.sc-rank { font-size: .82rem; font-weight: 700; color: var(--brand); background: var(--surface-2); padding: 2px 8px; white-space: nowrap; }
+.scorecard .overall { display: flex; align-items: center; gap: 14px; margin: 8px 0 16px; padding-bottom: 14px; border-bottom: 3px double var(--line); line-height: 1.35; }
+.sc-sub { margin: 0 0 4px; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
 .sc-calc { margin: 12px 0 0; line-height: 1.45; }
-.sc-meta { margin: 4px 0 0; }
-.sc-btn { width: 100%; text-align: center; }
-.btn.pdf-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 8px; box-sizing: border-box; }
+.btn.pdf-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 14px; box-sizing: border-box; }
+/* The top of the Price section (build_site.price_box): the yearly price, large, then the facts */
+.price-box { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--good); padding: 16px 20px; margin: 0 0 1.2em; }
+.pb-main { display: flex; flex-direction: column; line-height: 1.1; }
+.pb-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.pb-amount { font-family: var(--score-font); font-size: 2.6rem; font-weight: 700; color: var(--good-ink); margin-top: 4px; }
+.pb-per { font-size: .95rem; color: var(--muted); }
+.pb-facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0; font-size: .95rem; }
+.pb-facts dt { text-align: right; font-weight: 600; }
+.pb-facts dt::after { content: ":"; }
+.pb-facts dd { margin: 0; }
 /* ===== END STANDARD: report ===== */
 
 /* ===== START STANDARD: report-section ===== */
@@ -306,10 +340,12 @@ td.win::after { content: " ✓"; color: var(--good); }
 .calc .calc-remark { margin-top: 8px; color: var(--muted); font-style: italic; }
 .calc .calc-sum { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
 /* Steps (build_site.calc_steps): a name on the left, its value on the right, one per line */
-.calc-list.steps .calc-k { flex: none; width: 9.5em; color: var(--muted); }
+.calc-list.steps .calc-k { flex: none; width: 9.5em; color: var(--muted); text-align: right; }
+.calc-list.steps .calc-k::after { content: ":"; }
 .calc-list.steps .calc-k a { display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
+.report-sec:has(#overall-score) .calc-sum { border-top: 3px double var(--text); }
 /* On a phone a long value (a formula) drops under its name; a short one (a score) stays beside it */
-@media (max-width: 480px) { .calc-list.steps li { flex-wrap: wrap; row-gap: 0; } }
+@media (max-width: 480px) { .calc-list.steps li { flex-wrap: wrap; row-gap: 0; } .calc-list.steps .calc-k { text-align: left; } }
 /* The About page's scoring table (build_site.scoring_method): the category with its icon, then its box */
 td > .calc { margin: 0; }
 .cat-name { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
@@ -351,7 +387,7 @@ details.group .gvalue .gpts { box-sizing: border-box; width: 5em; min-width: 0; 
   --radar-edge: var(--brand);                       /* the shape's outline */
   --radar-line: color-mix(in srgb, var(--muted) 40%, transparent);
   --radar-label-gap: 56%;                           /* how far out the labels sit (50% = the outer ring) */
-  position: relative; width: 56%; aspect-ratio: 1; margin: 3.4em auto 3.8em;
+  position: relative; width: 56%; aspect-ratio: 1; margin: 5em auto 3.8em;
 }
 .radar.good { --radar-band: var(--good); }
 .radar.ok { --radar-band: var(--ok); }
@@ -450,7 +486,8 @@ details.group .gvalue .gpts { box-sizing: border-box; width: 5em; min-width: 0; 
 .pros-cons ul { list-style: none; padding: 0; margin: 0; font-size: .93rem; }
 .pros-cons li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); line-height: 1.45; }
 .pros-cons li:last-child { border-bottom: 0; }
-.pc-area { flex: none; font-size: .75rem; color: var(--muted); white-space: nowrap; padding-top: 2px; }
+.pc-area { flex: none; font-size: .75rem; color: var(--brand); white-space: nowrap; padding-top: 2px; }  /* a link to that section */
+.pc-area:hover { color: var(--accent); }
 /* ===== END STANDARD: pros-cons ===== */
 
 /* ===== START STANDARD: timeline ===== */
@@ -497,16 +534,10 @@ details.group .gvalue .gpts { box-sizing: border-box; width: 5em; min-width: 0; 
 .value-chart .q-label.bad { fill: var(--bad); }
 .value-chart .tick { font-size: 11px; fill: var(--muted); }
 .value-chart .axis { font-size: 12px; fill: var(--text); }
-.value-chart .dot-other { fill: var(--muted); fill-opacity: .55; stroke: var(--surface); stroke-width: 1.5; }
-.value-chart a:hover .dot-other, .value-chart a:focus .dot-other { fill: var(--accent); fill-opacity: 1; }
-.value-chart .dot-me { fill: var(--brand); stroke: var(--surface); stroke-width: 2.5; }
-/* Legend under the chart */
-.value-fig figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
-.lg-item { display: inline-flex; align-items: center; gap: 6px; margin: 0 8px; white-space: nowrap; }
-.lg-hint { flex-basis: 100%; font-size: .8rem; }
-.lg { display: inline-block; width: 11px; height: 11px; border-radius: 50%; }
-.lg-me { background: var(--brand); }
-.lg-other { background: var(--muted); opacity: .55; }
+/* The CRM: its logo in a white box with the brand outline, centred on its scores */
+.value-chart .me-box { fill: #fff; stroke: var(--brand); stroke-width: 2; filter: drop-shadow(0 1px 2px rgba(20, 30, 50, .25)); }
+.value-chart .me-initials { font-size: 14px; font-weight: 700; fill: var(--brand); }
+.value-fig figcaption { margin-top: 6px; }
 /* ===== END STANDARD: value-chart ===== */
 
 /* ---------- Results table filters ---------- */
@@ -764,13 +795,16 @@ body:has(#show-cats:not(:checked)) .rc-cats { display: none; }
   transform: translateY(100%); transition: transform .25s ease;
 }
 .compare-bar.open { transform: translateY(0); }
-#review-grid { margin-bottom: 90px; }  /* room for the compare bar */
+body:has(.compare-bar.open) { padding-bottom: 80px; }  /* room for the compare bar */
 .compare-bar[hidden] { display: none; }
 .compare-bar-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; padding-top: 14px; padding-bottom: 14px; }
 .compare-names { font-weight: 700; font-size: 1.05rem; }
+.compare-names .muted { font-weight: 400; font-size: .95rem; }
+.compare-bar.nudge { animation: nudge .5s ease; }
+@keyframes nudge { 30% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) { .compare-bar { transition: none; } .compare-bar.nudge { animation: none; } }
 .compare-actions { display: inline-flex; gap: 10px; }
-/* Clicking a card ticks it for comparison; the Review link at the bottom opens the review */
-body:has(.rc-pick:not([hidden])) .review-card { cursor: pointer; }
+.compare-actions [hidden] { display: none; }
 /* Best-of page: each pick is its own titled section, product shown with its logo */
 .pick { margin: 12px 0 8px; }
 .pick-id { display: flex; align-items: center; gap: 14px; }
@@ -786,9 +820,18 @@ h1 + h2[id], h1 + .byline + h2[id] { border-top: 0; padding-top: 0; }
 /* Home page top picks: the All Reports page card under its pick title */
 #top-picks { border-top: 0; padding-top: 0; margin-top: 0; } /* first heading on the home page: no separator or extra gap under the site header */
 .home-picks { margin-bottom: 12px; }
-.home-pick { display: flex; flex-direction: column; }
-.home-pick h3 { margin: 0 0 8px; font-size: 1rem; }
-.home-pick .review-card { flex: 1; }
+.home-pick { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; }
+.home-pick h3 { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; font-size: 1rem; }
+/* Best Overall's award, and the medals on the complete list */
+.award-icon { flex: none; width: 22px; height: 22px; color: #c9a227; }
+.award-icon.silver { color: #9aa1ab; }
+.award-icon.bronze { color: #b0713a; }
+.home-more { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 18px; }
+.home-list-link { font-weight: 600; }
+/* The complete list (rankings.html) */
+.place { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.rank-crm { display: flex; align-items: center; gap: 12px; line-height: 1.35; }
+.rank-logo { width: 36px; height: 36px; flex: none; object-fit: contain; background: #fff; border: 1px solid var(--line); padding: 3px; }
 
 
 
