@@ -1,4 +1,4 @@
-/* CRM Compare: small helpers on every page. Copied to site/site.js by the pipeline.
+/* The CRM Compare Website: small helpers on every page. Copied to site/site.js by the pipeline.
    The review feed pauses while it is tapped or focused.
    The section guide on the left bolds the link to the section being read.
    On a comparison page, one button opens (or closes) every feature group where the two CRMs differ. */
